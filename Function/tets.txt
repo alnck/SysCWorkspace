@@ -1,9 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <ctype.h>
 
 void disp_hex(const void *buf, size_t size, size_t lbytes)
 {
-    size_t i;
+    size_t i, k;
     unsigned char *cbuf = (unsigned char*)buf;
 
     for (i = 0; i < size; i++)
@@ -11,9 +12,11 @@ void disp_hex(const void *buf, size_t size, size_t lbytes)
         if (i % lbytes == 0)
             printf("%08x", (unsigned int)i);
 
-        printf("%02X", cbuf[i], i % lbytes == lbytes - 1 ? '\n' : ' ');
+        printf("%02X", cbuf[i]);
 
-
+        if (i % lbytes == lbytes - 1)
+            for (k = 0; k < lbytes; ++k)
+                printf("%c", iscntrl(cbuf[i - lbytes + k]) ? '.' : cbuf[i - lbytes + k]);
     }
     
 }

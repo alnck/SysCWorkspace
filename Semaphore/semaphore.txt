@@ -1,0 +1,34 @@
+Örnek kod ;
+
+CreateSemaphore();
+
+WaitForSingleObject(g_hSemaphore, INFINITE);
+
+    //Kritik kod
+
+ReleaseSemaphore(g_hSemaphore, 1 , NULL);
+
+--------------------------------------------------------------------------------------------------------------------------------
+1) CreateSemaphore fonksiyon ile handle değeri elde edilir.
+    1. parametre nesnesin güvenlik parametreleri
+    2. parametre Semaphore sayacının baştan kaç olduğu değerdir. (Aslında kritik koda kaç tane akışın gireceğini belirtmektedir.)
+    3. parametre Sayıcın alabileceği maksimum değerdir. (Genellikle 2 ve 3 parametre aynı değer olur.)
+    4. Procesler arası kullanımda gereken isim.
+Başarı durumunda Handle değerine, başarısız durumda NULL döner.
+Başka proceste yaratılmış semaphore başka procesde acılırsa 2. ve 3. parametrenin bir anlamı kalmaz.
+
+2) WaitForSingleObject(g_hSemaphore, INFINITE); (Kritik koddaki anlık yapılacak iş sayısını düzenlemek için)
+    Semaphor sayacı sıfırdan büyükse(açıksa) burdan geçersin.
+    Semaphor sayacı sıfırsa (kapalıysa) büyük olana kadar beklersiniz.
+        Semaphore sayacı WaitForSingleObject'den geçerse Semaphore sayacı 1 azaltılarak devam eder.
+ReleaseSemaphore(g_hSemaphore, 1 , NULL);
+1.p handle değeri
+2.p sayacın kaç arttırılacagıdır. (WaitForSingleObject 1 azaltıgı için genelde bu değer 1 olur.)
+3.p sayacın önceki değeri.
+
+** WaitForSingleObject ve ReleaseSemaphore arasındaki ilişki otopark gibidir. Otopark kapasitesi burda semaphore saycının ilk değeridir.
+WaitForSingleObject da sayac sıfırlandığında otopark doldu demektir. bir araç otoparktan çıktıgında 1 yer boşalır (ReleaseSemaphore'un sayacı bir arttırması boşalan yeri belirmesi demektir.)
+
+
+
+Not** Bütün kernel nesneleri CloseHandle() fonksiyonu ile kapatılır.

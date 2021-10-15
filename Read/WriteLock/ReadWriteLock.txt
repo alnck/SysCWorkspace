@@ -1,0 +1,18 @@
+InitilaizeSRWLock function
+
+İnsert işlemi yapılacaksa ;
+AcquireSRWLockExclusiv(g_rwLock);
+// insert kod
+Release SRWLockExclusive(g_rwLock);
+
+Search işlemi yapılırken ;
+AcquireSRWLockShared(g_rwLock);
+//  Search kod
+Release SRWLockShared(g_rwLock);
+
+**İki tharet arasındaki insert ve search işlemi durumları nasıl olmaılı.
+
+T1  |   T2  |Durum
+R   |   R   |Aynı anda
+R   |   W   |Sıralı
+W   |   W   |Sıralı
